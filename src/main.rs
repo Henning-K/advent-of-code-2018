@@ -1,4 +1,3 @@
-#[macro_use]
 extern crate failure;
 
 use std::collections::BTreeSet;
