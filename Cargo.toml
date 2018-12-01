@@ -1,0 +1,7 @@
+[package]
+authors = ["Henning-K <henning.kowalk962@web.de>"]
+name = "advent-of-code-2018"
+version = "0.1.0"
+
+[dependencies]
+failure = "0.1.3"
