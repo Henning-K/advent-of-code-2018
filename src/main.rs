@@ -63,7 +63,7 @@ fn main() -> Result<(), Error> {
 }
 
 fn task_01_a() -> Result<i64, Error> {
-    let in_file = File::open("data/01_a.txt")?;
+    let in_file = File::open("data/01.txt")?;
     let buf_rdr = BufReader::new(in_file);
     let res = buf_rdr
         .lines()
@@ -76,7 +76,7 @@ fn task_01_a() -> Result<i64, Error> {
 }
 
 fn task_01_b() -> Result<i64, Error> {
-    let in_file = File::open("data/01_b.txt")?;
+    let in_file = File::open("data/01.txt")?;
     let buf_rdr = BufReader::new(in_file);
     let mut bts = BTreeSet::new();
     bts.insert(0i64);
@@ -98,7 +98,7 @@ fn task_01_b() -> Result<i64, Error> {
 }
 
 fn task_02_a() -> Result<i64, Error> {
-    let in_file = File::open("data/02_a.txt")?;
+    let in_file = File::open("data/02.txt")?;
     let buf_rdr = BufReader::new(in_file);
 
     let mut arr = [0, 0];
@@ -126,7 +126,7 @@ fn task_02_a() -> Result<i64, Error> {
 }
 
 fn task_02_b() -> Result<String, Error> {
-    let in_file = File::open("data/02_b.txt")?;
+    let in_file = File::open("data/02.txt")?;
     let buf_rdr = BufReader::new(in_file);
 
     let mut vec = buf_rdr.lines().map(Result::unwrap).collect::<Vec<String>>();
