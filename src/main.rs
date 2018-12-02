@@ -129,10 +129,16 @@ fn task_02_b() -> Result<String, Error> {
     let in_file = File::open("data/02_b.txt")?;
     let buf_rdr = BufReader::new(in_file);
 
-    let mut arr = [0, 0];
-
     let mut vec = buf_rdr.lines().map(Result::unwrap).collect::<Vec<String>>();
     vec.sort_unstable();
+
+    for (i, val) in vec.iter().enumerate() {
+        for j in i..vec.len() {
+            if 1 == val.chars().zip(vec[j].chars()).filter(|(a,b)| a!=b).count() {
+                return Ok(val.chars().zip(vec[j].chars()).filter(|(a,b)| a==b).map(|(a,_b)| a).collect::<String>());
+            }
+        }
+    }
 
     Ok(String::new())
 }
