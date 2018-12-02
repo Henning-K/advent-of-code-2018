@@ -1,6 +1,6 @@
 extern crate failure;
 
-use std::collections::BTreeSet;
+use std::collections::{BTreeMap, BTreeSet};
 use std::fs::File;
 use std::io::{prelude::*, BufReader};
 use std::time::Instant;
@@ -53,6 +53,12 @@ fn main() -> Result<(), Error> {
     let timer_01_b = Timer::create("Timer 01 b");
     timer_01_b.run(task_01_b)?;
 
+    let timer_02_a = Timer::create("Timer 02 a");
+    timer_02_a.run(task_02_a)?;
+
+    let timer_02_b = Timer::create("Timer 02 b");
+    timer_02_b.run(task_02_b)?;
+
     Ok(())
 }
 
@@ -89,4 +95,44 @@ fn task_01_b() -> Result<i64, Error> {
         }
     }
     unreachable!();
+}
+
+fn task_02_a() -> Result<i64, Error> {
+    let in_file = File::open("data/02_a.txt")?;
+    let buf_rdr = BufReader::new(in_file);
+
+    let mut arr = [0, 0];
+
+    for line in buf_rdr.lines() {
+        let mut bts = line
+            .expect("")
+            .chars()
+            .fold(BTreeMap::<char, usize>::new(), |mut acc, c| {
+                {
+                    let entry = acc.entry(c).or_insert(0);
+                    *entry += 1;
+                }
+                acc
+            });
+        if bts.values().any(|&val| val==2) {
+            arr[0] += 1;
+        }
+        if bts.values().any(|&val| val==3) {
+            arr[1] += 1;
+        }
+    }
+
+    Ok(arr.iter().product())
+}
+
+fn task_02_b() -> Result<String, Error> {
+    let in_file = File::open("data/02_b.txt")?;
+    let buf_rdr = BufReader::new(in_file);
+
+    let mut arr = [0, 0];
+
+    let mut vec = buf_rdr.lines().map(Result::unwrap).collect::<Vec<String>>();
+    vec.sort_unstable();
+
+    Ok(String::new())
 }
