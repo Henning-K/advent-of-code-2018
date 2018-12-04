@@ -1,4 +1,5 @@
 extern crate failure;
+#[macro_use] extern crate nom;
 
 use std::collections::{BTreeMap, BTreeSet};
 use std::fs::File;
@@ -6,6 +7,11 @@ use std::io::{prelude::*, BufReader};
 use std::time::Instant;
 
 use failure::Error;
+
+type Result<T> = std::result::Result<T, Error>;
+
+mod task_03;
+use task_03::*;
 
 struct Timer<'a> {
     desc: &'a str,
@@ -16,7 +22,7 @@ impl<'a> Timer<'a> {
         Timer { desc }
     }
 
-    fn run<T: std::fmt::Debug, F: (Fn() -> Result<T, Error>)>(&self, f: F) -> Result<(), Error> {
+    fn run<T: std::fmt::Debug, F: (Fn() -> Result<T>)>(&self, f: F) -> Result<()> {
         let start = Instant::now();
         let result = f()?;
         let dur = start.elapsed();
@@ -44,7 +50,7 @@ impl<'a> Timer<'a> {
     }
 }
 
-fn main() -> Result<(), Error> {
+fn main() -> Result<()> {
     println!("File I/O will be included in timers.");
 
     let timer_01_a = Timer::create("Timer 01 a");
@@ -59,10 +65,13 @@ fn main() -> Result<(), Error> {
     let timer_02_b = Timer::create("Timer 02 b");
     timer_02_b.run(task_02_b)?;
 
+    let timer_03_a = Timer::create("Timer 03 a");
+    timer_03_a.run(task_03_a)?;
+
     Ok(())
 }
 
-fn task_01_a() -> Result<i64, Error> {
+fn task_01_a() -> Result<i64> {
     let in_file = File::open("data/01.txt")?;
     let buf_rdr = BufReader::new(in_file);
     let res = buf_rdr
@@ -75,7 +84,7 @@ fn task_01_a() -> Result<i64, Error> {
     Ok(res)
 }
 
-fn task_01_b() -> Result<i64, Error> {
+fn task_01_b() -> Result<i64> {
     let in_file = File::open("data/01.txt")?;
     let buf_rdr = BufReader::new(in_file);
     let mut bts = BTreeSet::new();
@@ -97,7 +106,7 @@ fn task_01_b() -> Result<i64, Error> {
     unreachable!();
 }
 
-fn task_02_a() -> Result<i64, Error> {
+fn task_02_a() -> Result<i64> {
     let in_file = File::open("data/02.txt")?;
     let buf_rdr = BufReader::new(in_file);
 
@@ -125,11 +134,11 @@ fn task_02_a() -> Result<i64, Error> {
     Ok(arr.iter().product())
 }
 
-fn task_02_b() -> Result<String, Error> {
+fn task_02_b() -> Result<String> {
     let in_file = File::open("data/02.txt")?;
     let buf_rdr = BufReader::new(in_file);
 
-    let mut vec = buf_rdr.lines().map(Result::unwrap).collect::<Vec<String>>();
+    let mut vec = buf_rdr.lines().map(std::result::Result::unwrap).collect::<Vec<String>>();
     vec.sort_unstable();
 
     for (i, val) in vec.iter().enumerate() {
