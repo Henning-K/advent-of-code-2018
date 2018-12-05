@@ -1,5 +1,6 @@
 extern crate failure;
-#[macro_use] extern crate nom;
+#[macro_use]
+extern crate nom;
 
 use std::collections::{BTreeMap, BTreeSet};
 use std::fs::File;
@@ -68,6 +69,12 @@ fn main() -> Result<()> {
     let timer_03_a = Timer::create("Timer 03 a");
     timer_03_a.run(task_03_a)?;
 
+    let timer_05_a = Timer::create("Timer 05 a");
+    timer_05_a.run(task_05_a)?;
+
+    let timer_05_b = Timer::create("Timer 05 b");
+    timer_05_b.run(task_05_b)?;
+    
     Ok(())
 }
 
@@ -123,10 +130,10 @@ fn task_02_a() -> Result<i64> {
                 }
                 acc
             });
-        if bts.values().any(|&val| val==2) {
+        if bts.values().any(|&val| val == 2) {
             arr[0] += 1;
         }
-        if bts.values().any(|&val| val==3) {
+        if bts.values().any(|&val| val == 3) {
             arr[1] += 1;
         }
     }
@@ -138,16 +145,82 @@ fn task_02_b() -> Result<String> {
     let in_file = File::open("data/02.txt")?;
     let buf_rdr = BufReader::new(in_file);
 
-    let mut vec = buf_rdr.lines().map(std::result::Result::unwrap).collect::<Vec<String>>();
+    let mut vec = buf_rdr
+        .lines()
+        .map(std::result::Result::unwrap)
+        .collect::<Vec<String>>();
     vec.sort_unstable();
 
     for (i, val) in vec.iter().enumerate() {
         for j in i..vec.len() {
-            if 1 == val.chars().zip(vec[j].chars()).filter(|(a,b)| a!=b).count() {
-                return Ok(val.chars().zip(vec[j].chars()).filter(|(a,b)| a==b).map(|(a,_b)| a).collect::<String>());
+            if 1 == val
+                .chars()
+                .zip(vec[j].chars())
+                .filter(|(a, b)| a != b)
+                .count()
+            {
+                return Ok(val
+                    .chars()
+                    .zip(vec[j].chars())
+                    .filter(|(a, b)| a == b)
+                    .map(|(a, _b)| a)
+                    .collect::<String>());
             }
         }
     }
 
     Ok(String::new())
+}
+
+fn task_05_a() -> Result<usize> {
+    let mut in_file = File::open("data/05.txt")?;
+    let mut input = String::new();
+    in_file.read_to_string(&mut input)?;
+
+    let mut bs = String::from(input).into_bytes();
+    let mut i = 1;
+    let mut len = bs.len();
+    let diff = b'a' - b'A';
+    while i < len {
+        if bs[i] - bs[i - 1] == diff || bs[i - 1] - bs[i] == diff {
+            bs.remove(i);
+            bs.remove(i - 1);
+            i = 1;
+            len = bs.len();
+        } else {
+            i += 1;
+        }
+    }
+    Ok(bs.len())
+}
+
+fn task_05_b() -> Result<usize> {
+    let mut in_file = File::open("data/05.txt")?;
+    let mut input = String::new();
+    in_file.read_to_string(&mut input)?;
+    
+    let min_n = (b'a'..b'z')
+        .map(|c| test_for_letter(&input, c as char))
+        .min()
+        .unwrap();
+
+    Ok(min_n)
+}
+
+fn test_for_letter(bs: &str, c: char) -> usize {
+    let mut bs = bs.replace(c, "").replace(c.to_ascii_uppercase(), "").into_bytes();
+    let mut i = 1;
+    let mut len = bs.len();
+    let diff = b'a' - b'A';
+    while i < len {
+        if bs[i] - bs[i - 1] == diff || bs[i - 1] - bs[i] == diff {
+            bs.remove(i);
+            bs.remove(i - 1);
+            i = 1;
+            len = bs.len();
+        } else {
+            i += 1;
+        }
+    }
+    len
 }

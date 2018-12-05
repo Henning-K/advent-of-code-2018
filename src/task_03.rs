@@ -11,16 +11,11 @@ pub(crate) fn task_03_a() -> Result<u64> {
         .lines()
         .map(std::result::Result::unwrap)
         .map(|s| Claim::from_str(&s).expect("Claim::from_str failed."))
-        // .map(std::result::Result::unwrap)
         .collect();
 
-    for c in claims {
-        println!("{:?}", &c);
-    }
-
-    // let test = "#1 @ 56,249: 24x16";
-    // println!("{}", test);
-    // println!("{:?}", Claim::from_str(test)?);
+    // for c in claims {
+    //     println!("{:?}", &c);
+    // }
 
     Ok(0)
 }
@@ -54,17 +49,9 @@ fn to_u32(input: CompleteStr) -> std::result::Result<u32, std::num::ParseIntErro
     u32::from_str_radix(&input, 10)
 }
 
-// fn is_dec_digit(c: char) -> bool {
-//     c.is_digit(10)
-// }
-
 named!(digit_muncher<CompleteStr, u32>,
     map_res!(digit, to_u32)
 );
-
-// named!(digit_muncher_end<CompleteStr, u32>,
-//     map_res!(complete!(digit), to_u32)
-// );
 
 named!(claim_line<CompleteStr, Claim>,
     dbg_dmp!(
