@@ -1,24 +1,25 @@
-extern crate failure;
-#[macro_use]
-extern crate nom;
+// extern crate failure;
+// #[macro_use]
+// extern crate nom;
 
 use std::collections::{BTreeMap, BTreeSet};
 use std::fs::File;
-use std::io::{prelude::*, BufReader};
+use std::io::{BufRead, BufReader, Read};
 use std::time::Instant;
 
-use failure::Error;
+use ::failure::Error;
+use ::nom::*;
 
 type Result<T> = std::result::Result<T, Error>;
 
 mod task_01;
-use task_01::*;
+use crate::task_01::*;
 mod task_02;
-use task_02::*;
+use crate::task_02::*;
 mod task_03;
-use task_03::*;
+use crate::task_03::*;
 mod task_05;
-use task_05::*;
+use crate::task_05::*;
 
 struct Timer<'a> {
     desc: &'a str,
@@ -72,9 +73,10 @@ fn main() -> Result<()> {
     timer_create_run!(timer_02_a, task_02_a);
     timer_create_run!(timer_02_b, task_02_b);
     timer_create_run!(timer_03_a, task_03_a);
-    
+    timer_create_run!(timer_03_b, task_03_b);
+
     timer_create_run!(timer_05_a, task_05_a);
     timer_create_run!(timer_05_b, task_05_b);
-    
+
     Ok(())
 }

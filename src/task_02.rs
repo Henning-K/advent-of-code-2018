@@ -7,7 +7,7 @@ pub(crate) fn task_02_a() -> Result<i64> {
     let mut arr = [0, 0];
 
     for line in buf_rdr.lines() {
-        let mut bts = line
+        let bts = line
             .expect("")
             .chars()
             .fold(BTreeMap::<char, usize>::new(), |mut acc, c| {

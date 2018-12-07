@@ -9,7 +9,8 @@ pub(crate) fn task_01_a() -> Result<i64> {
             n.expect("Getting line from file failed.")
                 .parse::<i64>()
                 .expect("Number parsing failed.")
-        }).fold(0, |acc, x| acc + x);
+        })
+        .fold(0, |acc, x| acc + x);
     Ok(res)
 }
 
@@ -24,7 +25,8 @@ pub(crate) fn task_01_b() -> Result<i64> {
             n.expect("Getting line from file failed.")
                 .parse::<i64>()
                 .expect("Number parsing failed.")
-        }).collect::<Vec<i64>>();
+        })
+        .collect::<Vec<i64>>();
     let mut acc = 0i64;
     for i in numbers.iter().cycle() {
         acc += i;
