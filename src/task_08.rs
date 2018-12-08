@@ -28,13 +28,13 @@ pub(crate) fn task_08_b() -> Result<usize> {
 }
 
 #[derive(Debug, PartialEq)]
-pub(crate) struct Node {
+struct Node {
     children: Option<Vec<Node>>,
     metadata: Option<Vec<u32>>,
 }
 
 impl Node {
-    pub(crate) fn new(vec: &[u32]) -> Self {
+    fn new(vec: &[u32]) -> Self {
         let mut idx = 0;
         Self::parse(&vec, &mut idx)
     }
@@ -74,7 +74,7 @@ impl Node {
         }
     }
 
-    pub(crate) fn sum_metadata(&self) -> usize {
+    fn sum_metadata(&self) -> usize {
         let meta_sum = match &self.metadata {
             None => 0usize,
             Some(v) => v.iter().map(|&i| i as usize).sum(),
@@ -86,7 +86,7 @@ impl Node {
             }
     }
 
-    pub(crate) fn node_value(&self) -> usize {
+    fn node_value(&self) -> usize {
         match &self.children {
             None => match &self.metadata {
                 None => 0,
