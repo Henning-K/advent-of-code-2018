@@ -20,6 +20,8 @@ mod task_03;
 use crate::task_03::*;
 mod task_05;
 use crate::task_05::*;
+mod task_08;
+use crate::task_08::*;
 
 struct Timer<'a> {
     desc: &'a str,
@@ -77,6 +79,9 @@ fn main() -> Result<()> {
 
     timer_create_run!(timer_05_a, task_05_a);
     timer_create_run!(timer_05_b, task_05_b);
+
+    timer_create_run!(timer_08_a, task_08_a);
+    timer_create_run!(timer_08_b, task_08_b);
 
     Ok(())
 }
